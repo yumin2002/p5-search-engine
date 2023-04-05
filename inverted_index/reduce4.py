@@ -28,7 +28,7 @@ def main():
     total_doc = 0
     with open("./inverted_index/count.txt", "r") as f:
         total_doc = int(f.readline().strip("\n"))
-        print(total_doc)
+        # print(total_doc)
     for line in sys.stdin:
         # print(line)
         reduce_one_group(line, total_doc)
