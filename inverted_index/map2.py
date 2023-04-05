@@ -17,4 +17,5 @@ for line in lines:  # sys.stdin.readlines():
     words = line.split()
     docID = words[0]
     for w in words[1:]:
-        print(docID, w, 1)
+        # print(docID, w, 1)
+        print(f'{docID} {w}\t1')

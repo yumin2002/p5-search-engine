@@ -7,14 +7,14 @@ def reduce_one_group(key, group):
     """Reduce one group."""
     word_count = 0
     for line in group:
-        count = line.split(" ")[2]
+        count = line.split("\t")[1]
         word_count += int(count)
     print(f"{key} {word_count}")
 
 
 def keyfunc(line):
     """Return the key from a TAB-delimited key-value pair."""
-    return line.split(" ")[0] + " " + line.split(" ")[1]
+    return line.split("\t")[0]
 
 
 def main():
