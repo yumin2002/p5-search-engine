@@ -8,7 +8,7 @@ csv.field_size_limit(sys.maxsize)
 
 sws = []
 
-with open("./inverted_index/stopwords.txt", 'r') as stopwords:
+with open("stopwords.txt", 'r') as stopwords:
     lines = stopwords.readlines()
     sws = [s.strip('\n') for s in lines]
 

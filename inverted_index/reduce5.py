@@ -52,6 +52,17 @@ def reduce_one_group(key, group):
         # we also need to take out the nk and those stuff
         # I think just nK? we should't need w either ohhh right
         # final out should look like: term idf docid tf norm-f
+# + madoop -input output5 -output output6 -mapper ./inverted_index/map5.py -reducer ./inverted_index/reduce6.py
+# Error: Failed executable test: Command '/Users/yuhanmin/Desktop/485p5/inverted_index/reduce6.py' returned non-zero exit status 127.
+# just got this error
+# looks nice now
+# output exactly the same as example
+# our big one has some issue for running ./inverted_index/pipeline.sh inverted_index/input
+# the output does not match 
+# can you paste output here# #
+# 0000noemalife 22003515 1 1 0.47712125471966244 0.47712125471966244 0.47712125471966244 0.47712125471966244
+# 005800x600jpgthe 1675507 1 1 0.47712125471966244 0.47712125471966244 0.47712125471966244 0.47712125471966244
+# lemme verify each stage
 
         # i think i found how to segment
         # To produce segments that match the instructor solution,

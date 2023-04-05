@@ -26,7 +26,7 @@ def reduce_one_group(line, total_doc):
 def main():
     """Divide sorted lines into groups that share a key."""
     total_doc = 0
-    with open("./inverted_index/count.txt", "r") as f:
+    with open("total_document_count.txt", "r") as f:
         total_doc = int(f.readline().strip("\n"))
         # print(total_doc)
     for line in sys.stdin:
