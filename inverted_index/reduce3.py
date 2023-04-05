@@ -6,28 +6,31 @@ import itertools
 
 def reduce_one_group(key, group):
     """Reduce one group."""
-    word_count = 0
-    for line in group:
-        print("Everything in the group : ", group)
+    gps = list(group)
+    # print(gps)
+    word_count = len(gps)
+
+    for line in gps:
+        # print("Everything in the group : ", line)
         # for i in group:
         #     print(i)
         # count = line.split(" ")[2]
-        word_count += 1
+        # word_count += 1
         line = line.strip('\n')
-        print(f"{line} {word_count}")
-    # print(f"{line} {word_count}")
+    print(f"{key} {word_count}")
+    # print(f"{line} {word_count}")0
 
 
 def keyfunc(line):
     """Return the key from a TAB-delimited key-value pair."""
     # 1 mike 1 3
-    print(line.split(" ")[1])
-    return line.split(" ")[1]
+    return line.partition(" ")[0]
 
 
 def main():
+    l = sorted(list(sys.stdin))
     """Divide sorted lines into groups that share a key."""
-    for key, group in itertools.groupby(sys.stdin, keyfunc):
+    for key, group in itertools.groupby(l, keyfunc):
         reduce_one_group(key, group)
 
 

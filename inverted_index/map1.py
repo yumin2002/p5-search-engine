@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""MAP Clean String"""
 import sys
 import csv
 import re
@@ -17,8 +18,8 @@ sys.stdin = open("/dev/tty")  # Temporary addition
 for line in lines:
     # Combine both document title and document body by concatenating them, separated by a space.
     # print(line+'\n')
-    if (line == "\n"):
-        break
+    if line == "\n":
+        continue
     line = csv.reader([line])
     data = []
     for row in line:
