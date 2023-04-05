@@ -1,0 +1,1 @@
+cat inverted_index/example_input/input.csv | /usr/bin/python3 -u inverted_index/map1.py | sort | /usr/bin/python3 -u inverted_index/reduce1.py | /usr/bin/python3 -u inverted_index/map2.py | sort | /usr/bin/python3 -u inverted_index/reduce2.py | /usr/bin/python3 -u inverted_index/map3.py | /usr/bin/python3 -u inverted_index/reduce3.py
