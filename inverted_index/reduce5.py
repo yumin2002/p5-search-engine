@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""REDUCE: Calculate normalization facor"""
+"""REDUCE: Calculate normalization factor"""
 # working on it copied from job3
 import sys
 import itertools
@@ -18,6 +18,7 @@ def reduce_one_group(key, group):
         line = line.split("\t")
         line = " ".join(line)
         line = line.split(" ")
+        line.pop(0)
         w = line[5]
         d = float(w) ** 2
         sum += d
@@ -29,13 +30,23 @@ def reduce_one_group(key, group):
         line = line.split("\t")
         line = " ".join(line)
         line = line.split(" ")
+        line.pop(0)
         docid = line[0]
         term = line[1]
         tf = line[2]
         idf = line[4]
-
+        # HALO correct now
+        # 好耶！！
+        # Ithink it is working correctly?
+        # you can take a look at output6
         # document_id[TAB]term tf nk idf w
         # term idf docid tf norm-f
+        # lets just partition it now and we should be done
+        # partition? like dividing it into 3 docs by making the key in map 6 docid%3
+        # I have done that part, now output 6 is 3 files,  oghhhh thats why you pop0 nice nice AMAZING
+        # xixi hhhhhhhhh
+        # I might need to clean our conversation and test it QWQ
+        # don wanna clean up
 
         print(f'{term} {idf} {docid} {tf} {sum}')
         # we also need to take out the nk and those stuff
@@ -51,17 +62,22 @@ def reduce_one_group(key, group):
         # great idea
         # let me commit the current version
         # maybe also test maddoop
-        
+
 # map command:
 # cat inverted_index/example_input/input.csv | inverted_index/map1.py | sort | inverted_index/reduce1.py | inverted_index/map2.py | sort | inverted_index/reduce2.py | inverted_index/map3.py | sort | inverted_index/reduce3.py | inverted_index/reduce4.py | inverted_index/map5.py > out
 # reduce command for this stage:
 # cat inverted_index/example_input/input.csv | inverted_index/map1.py | sort | inverted_index/reduce1.py | inverted_index/map2.py | sort | inverted_index/reduce2.py | inverted_index/map3.py | sort | inverted_index/reduce3.py | inverted_index/reduce4.py | inverted_index/map5.py | inverted_index/reduce5.py > out
 
+# current looks totallly correct
+
 
 def keyfunc(line):
     """Return the key from a TAB-delimited key-value pair."""
     # document_id
-    return line.split("\t")[0]
+    return line.split("\t")[1].split()[0]
+
+# command for entire pipeline madoop:
+# ./inverted_index/pipeline.sh inverted_index/example_input
 
 
 def main():

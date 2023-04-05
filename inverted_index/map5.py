@@ -18,4 +18,4 @@ for line in lines:  # sys.stdin.readlines():
     temp = cols[0]
     cols[0] = cols[1]
     cols[1] = temp
-    print(f'{cols[0]}\t{" ".join(cols[1:])}')
+    print(f'{int(cols[0]) % 3}\t{" ".join(cols)}')

@@ -26,33 +26,45 @@ set -x
 # Remove output directories
 rm -rf output output[0-9]
 
-# Job 0: Document Count (this job is not part of the pipeline)
-madoop \
-  -input ${PIPELINE_INPUT} \
-  -output output0 \
-  -mapper ./map0.py \
-  -reducer ./reduce0.py
 
-# Copy document count to a separate file
-cp output0/part-00000 total_document_count.txt
 
 # Job 1
 madoop \
   -input ${PIPELINE_INPUT} \
   -output output1 \
-  -mapper ./map1.py \
-  -reducer ./reduce1.py
+  -mapper ./inverted_index/map1.py \
+  -reducer ./inverted_index/reduce1.py
 
 # Job 2
 madoop \
   -input output1 \
   -output output2 \
-  -mapper ./map2.py \
-  -reducer ./reduce2.py
+  -mapper ./inverted_index/map2.py \
+  -reducer ./inverted_index/reduce2.py
 
 
-  madoop \
+madoop \
   -input output2 \
   -output output3 \
-  -mapper ./map3.py \
-  -reducer ./reduce3.py
+  -mapper ./inverted_index/map3.py \
+  -reducer ./inverted_index/reduce3.py
+
+
+madoop \
+  -input output3 \
+  -output output4 \
+  -mapper ./inverted_index/map4.py \
+  -reducer ./inverted_index/reduce4.py
+
+
+madoop \
+  -input output4 \
+  -output output5 \
+  -mapper ./inverted_index/map4.py \
+  -reducer ./inverted_index/reduce4.py
+
+madoop \
+  -input inverted_index/output5 \
+  -output inverted_index/output6 \
+  -mapper inverted_index/map5.py \
+  -reducer inverted_index/reduce5.py
