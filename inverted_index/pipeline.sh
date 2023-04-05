@@ -71,6 +71,11 @@ madoop \
   -mapper ./map5.py \
   -reducer ./reduce5.py
 
+madoop \
+  -input output5 \
+  -output output6 \
+  -mapper ./map6.py \
+  -reducer ./reduce6.py
 # but first I need to remname those files
 # which files
 
