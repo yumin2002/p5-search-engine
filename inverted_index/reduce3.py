@@ -10,6 +10,8 @@ def reduce_one_group(key, group):
     word_count = len(gps)
     for line in gps:
         line = line.strip('\n')
+        line = line.split("\t")
+        line = " ".join(line)
         print(f"{line} {word_count}")
 
 
