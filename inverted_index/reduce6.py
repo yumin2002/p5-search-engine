@@ -9,20 +9,19 @@ import math
 def reduce_one_group(key, group):
     """Reduce one group."""
     gps = list(group)
-    res = ""
-    w = 0
+    term = ""
+    idf = ""
+    myline = []
     for line in gps:
         # document_id[TAB]term tf nk idf w
         line = line.strip('\n')
         line = line.split("\t")[1]
-        line = line.split(" ")
-        w = line[1]
-        content = line[2:]
-        res += " "
-        res += " ".join(content)
-    res1 = f"{key} {w} {res}"
-    print(res1)
-    # print(line)
+        line = line.split()
+        term = line[0]
+        idf = line[1]
+        myline = myline + line[2:]
+
+    print(f'{term} {idf} {" ".join(myline)}')
 
 
 def keyfunc(line):
