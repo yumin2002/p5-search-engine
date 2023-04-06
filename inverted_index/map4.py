@@ -11,7 +11,4 @@ sys.stdin = open("/dev/tty")  # Temporary addition
 for line in lines:  # sys.stdin.readlines():
     if line == "\n":
         continue
-    line = line.strip('\n')
-    line = line.split(" ")
-    # print(line.strip("\n"))
-    print(f"{line[0]}\t{" ".join(line[1:])} ")
+    print(line.strip("\n"))
