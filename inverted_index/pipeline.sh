@@ -64,7 +64,6 @@ madoop \
   -reducer ./reduce4.py
 
 
-
 madoop \
   -input output4 \
   -output output5 \
