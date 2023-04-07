@@ -7,17 +7,14 @@ import model
 import heapq
 
 
-def helper_fetch_res(res, url, query, weight):
-    query = " ".join(query)
-    response = requests.get(url, params={"q": query, "w": weight})
-    res = response.json()
-
-
 @search.app.route('/', method=["POST", "GET"])
 def show_index():
+    print("adsfasdnfaidnfawe")
     # get query and weight from user input in form
     if flask.request.method == 'GET':
+        print(0)
         context = {}
+        print(1)
         return flask.render_template("index_no_page.html", **context)
 
     elif flask.request.method == 'POST':
@@ -74,3 +71,9 @@ def show_index():
                 })
 
         return flask.render_template("index.html", **context)
+
+
+def helper_fetch_res(res, url, query, weight):
+    query = " ".join(query)
+    response = requests.get(url, params={"q": query, "w": weight})
+    res = response.json()

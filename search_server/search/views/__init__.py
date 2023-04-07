@@ -1,1 +1,2 @@
-# from search.views.main import 
+# from search.views.main import
+print("view init")

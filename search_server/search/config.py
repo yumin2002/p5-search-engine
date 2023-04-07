@@ -4,6 +4,7 @@ import pathlib
 APPLICATION_ROOT = '/'
 
 SEARCH_ROOT = pathlib.Path(__file__).resolve().parent.parent
+print(SEARCH_ROOT)
 
 DATABASE_FILENAME = SEARCH_ROOT/'var'/'search.sqlite3'
 SEARCH_INDEX_SEGMENT_API_URLS = [
