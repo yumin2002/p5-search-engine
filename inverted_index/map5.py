@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MAP: Calculate normalizationg factor"""
+"""MAP: Calculate normalization factor"""
 import sys
 import csv
 
