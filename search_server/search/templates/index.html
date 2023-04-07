@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+<form action="/" method="GET">
+  <span><input type="text" name="q" value=""/> <input type="submit" value="Search"/></span>
+  <span><input type="range" name="w" min="0.0" max="1.0" step="0.01" value="0.50"/></span>
+</form>
+
+{% if len(docs) == 0 %}
+<div class="no_results">
+    No search results found!
+</div>
+{% else %}
+{% for doc in docs %}
+<div>
+    <a class="doc_url" href={doc.doc_url}> 
+        <div class="doc_title">{doc.doc_title}</div>
+    </a>
+    <div class="doc_summary">{doc.doc_summary}</div>
+</div>
+{% endfor %}
+{% endif%}
+
+{% comment %} 
+Enclose each search result URL in <a class="doc_url">. If the url for a document is not in the database, show “No url available”.
+
+Enclose each search result title <div class="doc_title">.
+
+Enclose each search result summary in <div class="doc_summary">. If the summary for a document is not in the database, show “No summary available”.
+
+If there are no search results, display <div class="no_results">No search results found!</div>. {% endcomment %}
