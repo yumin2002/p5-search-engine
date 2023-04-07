@@ -1,2 +1,2 @@
-# from search.views.main import
-print("view init")
+from search.views.index import show_index
+print('inside init')

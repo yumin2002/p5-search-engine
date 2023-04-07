@@ -9,3 +9,4 @@ print("init")
 
 import search.views
 import search.model
+import search.config
