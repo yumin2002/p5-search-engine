@@ -6,21 +6,38 @@
 	</head>
     <body>
 
-        <form action="/" method="POST">
-            <p>{{query}}</p>
+        <form action="/" method="GET" >
+            <p>{{query}}</p> 
   <span><input type="text" name="q" value="{{query}}"/> <input type="submit" value="Search"/></span>
-  <span><input type="range" name="w" min="0.0" max="1.0" step="0.01" value="{{weight}}"/></span>
+  <span><input type="range" name="w" min="0.0" max="1.0" step="0.01" id="weight-input" value="{{weight|default('0.5')}}"/></span>
         </form>
 
         {% for doc in docs %}
         <div>
-            <a class="doc_url" href={{doc.url}}> 
-                <div class="doc_title">{{doc.title}}</div>
-            </a>
+            {% if doc.hasURL == True %}
+                <a class="doc_url" href="{{ doc.url|e }}"> 
+                    <p>{{doc.url}}</p>
+                </a>
+            {% else %}
+                <a class="doc_url" href="{{ doc.url|e }}"> 
+                    <p>No url available</p>
+                </a>
+            {% endif %}
+
+            <div class="doc_title">{{doc.title}}</div>
             <div class="doc_summary">{{doc.summary}}</div>
+
         </div>
         {% endfor %}
 
+        {% if noRes == True %}
+            <div class="no_results">No search results found!</div>
+        {% endif %}
+
 
     </body>
+
 </html>
+
+
+
