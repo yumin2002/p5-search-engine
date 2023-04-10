@@ -8,10 +8,10 @@ import heapq
 
 def helper_fetch_res(res, index, url, query, weight):
     # query = " ".join(query)
-    print("query = .join(query)")
+    # print("query = .join(query)")
 
     response = requests.get(url, params={"q": query, "w": weight})
-    print("res")
+    # print("res")
     res[index] = response.json()["hits"]
     # print(res)
 
@@ -44,7 +44,7 @@ def show_index():
     print(query, weight)
     # context["sear
 
-    if query != None:
+    if query != None and query != "":
         # res1 = None
         # res2 = None
         # res3 = None
@@ -105,6 +105,12 @@ def show_index():
                 "hasURL": True if doc_info["url"] else False,
             })
             # print(context)
+    # else:
+    #     query = ""
+    #     weight = 0.5
+    #     context["query"] = query
+    #     context["weight"] = weight
+
 
     return flask.render_template("index.html", **context)
 
