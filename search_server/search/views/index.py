@@ -44,7 +44,7 @@ def show_index():
     print(query, weight)
     # context["sear
 
-    if query != None and query != "":
+    if query != None: # and query != "":
         # res1 = None
         # res2 = None
         # res3 = None
@@ -64,7 +64,7 @@ def show_index():
         thread3.start()
 
         while True:
-            if res[1] and res[2] and res[0]:
+            if res[1] != None and res[2] != None and res[0] != None:
                 break
 
         print("get")
