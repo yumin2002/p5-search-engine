@@ -1,10 +1,9 @@
 import pathlib
 
 # Root of this application, useful if it doesn't occupy an entire domain
-APPLICATION_ROOT = '/'
+APPLICATION_ROOT = '/search_server'
 
 SEARCH_ROOT = pathlib.Path(__file__).resolve().parent.parent
-print(SEARCH_ROOT)
 
 DATABASE_FILENAME = pathlib.Path(__file__).resolve().parent.parent.parent/'var'/'search.sqlite3'
 SEARCH_INDEX_SEGMENT_API_URLS = [
