@@ -1,0 +1,53 @@
+#!/bin/bash
+# searchdb
+
+# Stop on errors
+# See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+set -x
+
+DIR="var"
+# Parse argument.  $1 is the first argument
+case $1 in
+  "start")
+    if ! [ -e "$DIR/search.sqlite3" ]; then
+        echo "Error: database does not exists"
+        exit 1
+    fi
+    ./bin/index status
+    if ! [ "$?" -eq 0 ]; then
+        echo "Error: index server is not running"
+        exit 1
+    fi
+    if pgrep -f "flask --app search run --host 0.0.0.0 --port 8000" > /dev/null; then
+        exit 1
+    fi
+    mkdir -p var/log
+    rm -f var/log/search.log
+    flask --app search run --host 0.0.0.0 --port 8000 &> var/log/search.log &
+    exit 0
+    ;;
+  "stop")
+    pkill -f 'flask --app search run --host 0.0.0.0 --port 8000' || true
+    ;;
+  "restart")
+    pkill -f 'flask --app search run --host 0.0.0.0 --port 8000' || true
+    echo "starting search server ..."
+    mkdir -p var/log
+    rm -f var/log/search.log
+    flask --app index run --host 0.0.0.0 --port 8000 &> var/log/search.log &
+    ;;
+  "status")
+    NPROCS=$(pgrep -f "flask --app search run --host 0.0.0.0 --port 8000" | wc -l)
+    echo "$NPROCS"
+    if [ "$NPROCS" -eq 1 ]; then
+        exit 0
+    else
+        echo "search server stopped"
+        exit 1
+    fi
+    ;;
+  *)
+    exit 1
+    ;;
+esac

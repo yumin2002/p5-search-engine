@@ -6,8 +6,6 @@
 # import model
 # import heapq
 
-print("inside main")
-print(os.getcwd())
 
 # @search.app.route('/', method=["POST", "GET"])
 # def show_index():
