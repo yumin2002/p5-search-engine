@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
-<form action="/" method="GET">
-  <span><input type="text" name="q" value=""/>
-     <input type="submit" value="Search"/></span>
-  <span><input type="range" name="w" min="0.0" max="1.0" step="0.01" value="0.50"/></span>
-</form>
+<html lang="en">
 
-{% if len(docs) == 0 %}
-<div class="no_results">
-    No search results found!
-</div>
-{% else %}
-{% for doc in docs %}
-<div>
-    <a class="doc_url" href={doc.doc_url}> 
-        <div class="doc_title">{doc.doc_title}</div>
-    </a>
-    <div class="doc_summary">{doc.doc_summary}</div>
-</div>
-{% endfor %}
-{% endif%}
+<head>
+    <title>insta485</title>
+</head>
 
-{% comment %} 
-Enclose each search result URL in <a class="doc_url">. If the url for a document is not in the database, show “No url available”.
+<body>
 
-Enclose each search result title <div class="doc_title">.
+    {% if weight == None and query == None%}
+    <form action="/" method="GET">
+        <input type="range" name="w" min="0.00" max="1.00" step="0.01" id="weight-input" />
+        <input type="text" name="q" /> <input type="submit" value="Search" />
+    </form>
+    {% elif weight == None and query != None %}
+    <form action="/" method="GET">
+        <input type="range" name="w" min="0.00" max="1.00" step="0.01" id="weight-input2" />
+        <input type="text" name="q" value="{{query}}" /> <input type="submit" value="Search" />
+        <p>{{query}}</p>
+    </form>
+    {% elif query == None and weight != None %}
+    <form action="/" method="GET">
+        <input type="range" name="w" min="0.00" max="1.00" step="0.01" id="weight-input3" value="{{weight}}" />
+        <input type="text" name="q" /> <input type="submit" value="Search" />
+    </form>
+    {% else %}
+    <form action="/" method="GET">
+        <input type="range" name="w" min="0.00" max="1.00" step="0.01" id="weight-input4" value="{{weight}}" />
+        <input type="text" name="q" value="{{query}}" /> <input type="submit" value="Search" />
+        <p>{{query}}</p>
+    </form>
+    {% endif %}
 
-Enclose each search result summary in <div class="doc_summary">. If the summary for a document is not in the database, show “No summary available”.
+    {% for doc in docs %}
+    <div>
+        {% if doc.hasURL == True %}
+        <a class="doc_url" href="{{ doc.url|e }}">
+            <p>{{doc.url}}</p>
+        </a>
+        {% else %}
+        <a class="doc_url" href="{{ doc.url|e }}">
+            <p>No url available</p>
+        </a>
+        {% endif %}
 
-If there are no search results, display <div class="no_results">No search results found!</div>. {% endcomment %}
+        <div class="doc_title">{{doc.title}}</div>
+        <div class="doc_summary">{{doc.summary}}</div>
+
+    </div>
+    {% endfor %}
+
+    {% if noRes == True %}
+    <div class="no_results">No search results found!</div>
+    {% endif %}
+
+
+</body>
+
+</html>
