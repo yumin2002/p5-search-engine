@@ -1,1 +1,1 @@
-# from search.views.main import 
+from search.views.main import show_index

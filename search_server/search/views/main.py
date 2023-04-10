@@ -3,7 +3,7 @@ import flask
 import search
 import requests
 from threading import Thread
-import model
+# import model
 import heapq
 
 
@@ -13,17 +13,18 @@ def helper_fetch_res(res, url, query, weight):
     res = response.json()
 
 
-@search.app.route('/', method=["POST", "GET"])
+@search.app.route('/', methods=["POST", "GET"])
 def show_index():
     # get query and weight from user input in form
-    if flask.request.method == 'GET':
+    if flask.request.method == 'POST':
         context = {}
         return flask.render_template("index_no_page.html", **context)
 
-    elif flask.request.method == 'POST':
-        query = flask.request.form.get("q")
-        weight = flask.request.form.get("w")
-
+    elif flask.request.method == 'GET':
+        query = flask.request.args.get("q")
+        weight = flask.request.args.get("w")
+        print("-------------------------")
+        print(query)
         context = {}
         context["urls"] = []
         # context["sear
