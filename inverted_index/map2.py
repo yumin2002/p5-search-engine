@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""MAP for count tf in document d"""
+"""MAP for count tf in document d."""
 import sys
 import csv
 
 csv.field_size_limit(sys.maxsize)
 
 lines = sys.stdin
-sys.stdin = open("/dev/tty")  # Temporary addition
 
 # 1 document document mike made cool
 

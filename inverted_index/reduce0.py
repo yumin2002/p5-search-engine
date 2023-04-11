@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-
-"""REDUCE Count Document number: N"""
+"""REDUCE Count Document number: N."""
 
 import sys
 
@@ -8,7 +7,7 @@ import sys
 def main():
     """Divide sorted lines into groups that share a key."""
     count = 0
-    for i in sys.stdin:
+    for _ in sys.stdin:
         count += 1
 
     print(count)

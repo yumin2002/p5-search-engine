@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""MAP for calculate nk(number of documents containing the term)"""
+"""MAP for calculate nk(number of documents containing the term)."""
 import sys
 import csv
 
 csv.field_size_limit(sys.maxsize)
 
 lines = sys.stdin
-sys.stdin = open("/dev/tty")  # Temporary addition
 
 # 1 document document mike made cool
 

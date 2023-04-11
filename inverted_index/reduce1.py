@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-REDUCE0 Clean strings
-"""
+"""REDUCE0 Clean strings."""
 import sys
 
 

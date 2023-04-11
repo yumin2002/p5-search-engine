@@ -1,16 +1,18 @@
-import os
-import flask
-import search
-import requests
+"""Doc string."""
 from threading import Thread
 # import model
 import heapq
+import flask
+import search
+import requests
+
 
 def helper_fetch_res(res, index, url, query, weight):
+    """Doc string."""
     # query = " ".join(query)
     # print("query = .join(query)")
 
-    response = requests.get(url, params={"q": query, "w": weight})
+    response = requests.get(url, params={"q": query, "w": weight}, timeout=10)
     # print("res")
     res[index] = response.json()["hits"]
     # print(res)
@@ -18,6 +20,7 @@ def helper_fetch_res(res, index, url, query, weight):
 
 @search.app.route('/', methods=["POST", "GET"])
 def show_index():
+    """Doc string."""
     # get query and weight from user input in form
     print("inside")
     # if flask.request.method == 'GET':
@@ -33,23 +36,22 @@ def show_index():
 
     print("query, weight")
 
-    
     context = {}
     # if query == None:
     #     query = ""
-    # if weight == None: 
+    # if weight == None:
     #     weight = 0.5
     context["query"] = query
     context["weight"] = weight
     print(query, weight)
     # context["sear
 
-    if query != None: # and query != "":
+    if query is not None:  # and query != "":
         # res1 = None
         # res2 = None
         # res3 = None
         res = [None, None, None]
-        print("config",search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"])
+        print("config", search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"])
         urls = search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"]
         # threads for making fetch request to server index
         thread1 = Thread(target=helper_fetch_res, args=(
@@ -64,11 +66,12 @@ def show_index():
         thread3.start()
 
         while True:
-            if res[1] != None and res[2] != None and res[0] != None:
+            if res[1] is not None and \
+                    res[2] is not None and res[0] is not None:
                 break
 
         print("get")
-        # res = res[0]["hits"] + res[1]["hits"] + res[2]["hits"] 
+        # res = res[0]["hits"] + res[1]["hits"] + res[2]["hits"]
         # print(res)
         res_docs = list(heapq.merge(
             *res, key=lambda x: x["score"], reverse=True))[:10]
@@ -84,7 +87,6 @@ def show_index():
         # print(res_docs)
         connection = search.model.get_db()
 
-        
         # docid,title,summary,url
         for doc in res_docs:
 
@@ -95,14 +97,17 @@ def show_index():
             )
 
             doc_info = cur.fetchall()[0]
-            
-            # summary = doc_info["summary"] if doc_info["summary"] else "No summary available"
+
+            # summary = doc_info["summary"]
+            # if doc_info["summary"] else "No summary available"
 
             context["docs"].append({
                 "title": doc_info["title"],
-                "summary": doc_info["summary"] if doc_info["summary"] else "No summary available",
-                "url": doc_info["url"] if doc_info["url"] else "No url available",
-                "hasURL": True if doc_info["url"] else False,
+                "summary": doc_info["summary"]
+                if doc_info["summary"] else "No summary available",
+                "url": doc_info["url"]
+                if doc_info["url"] else "No url available",
+                "hasURL": bool(doc_info["url"]),
             })
             # print(context)
     # else:
@@ -111,13 +116,10 @@ def show_index():
     #     context["query"] = query
     #     context["weight"] = weight
 
-
     return flask.render_template("index.html", **context)
 
-
-
-        # <!-- {% if len(docs) == 0 %}
-        # <div class="no_results">
-        #     No search results found!
-        # </div>
-        # {% else %} -->
+    # <!-- {% if len(docs) == 0 %}
+    # <div class="no_results">
+    #     No search results found!
+    # </div>
+    # {% else %} -->

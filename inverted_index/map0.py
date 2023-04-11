@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MAP Count Document number: N"""
+"""MAP Count Document number: N."""
 import sys
 import csv
 

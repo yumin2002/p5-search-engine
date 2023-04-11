@@ -1,7 +1,7 @@
 """search server model (database) API."""
 import sqlite3
 import flask
-import search
+from search import app
 
 
 def dict_factory(cursor, row):
@@ -10,7 +10,7 @@ def dict_factory(cursor, row):
     This is useful for building dictionaries which are then used to render a
     template.  Note that this would be inefficient for large queries.
     """
-    # {index (e.g. 0, 1, 2, ...)  :  
+    # {index (e.g. 0, 1, 2, ...)  :
     #           { "owner": owner_value, "colname":colvalue  } == row[idx] }
     return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
 
@@ -22,7 +22,7 @@ def get_db():
     https://flask.palletsprojects.com/en/1.0.x/appcontext/#storing-data
     """
     if 'sqlite_db' not in flask.g:
-        db_filename = search.app.config['DATABASE_FILENAME']
+        db_filename = app.config['DATABASE_FILENAME']
         print(db_filename)
         flask.g.sqlite_db = sqlite3.connect(str(db_filename))
         flask.g.sqlite_db.row_factory = dict_factory
@@ -34,7 +34,7 @@ def get_db():
     return flask.g.sqlite_db
 
 
-@search.app.teardown_appcontext
+@app.teardown_appcontext
 def close_db(error):
     """Close the database at the end of a request.
 

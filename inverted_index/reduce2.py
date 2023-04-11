@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Doc string."""
 import sys
 import itertools
 

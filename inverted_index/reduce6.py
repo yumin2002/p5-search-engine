@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""REDUCE: Calculate normalization factor"""
+"""REDUCE: Calculate normalization factor."""
 import sys
 import itertools
-import math
 # document_id[TAB]term tf nk idf w
 
 
-def reduce_one_group(key, group):
+def reduce_one_group(group):
     """Reduce one group."""
     gps = list(group)
     term = ""
@@ -34,8 +33,8 @@ def keyfunc(line):
 
 def main():
     """Divide sorted lines into groups that share a key."""
-    for key, group in itertools.groupby(sys.stdin, keyfunc):
-        reduce_one_group(key, group)
+    for key_group in itertools.groupby(sys.stdin, keyfunc):
+        reduce_one_group(key_group[1])
 
 
 if __name__ == "__main__":

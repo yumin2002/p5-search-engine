@@ -1,9 +1,8 @@
 """REST API for posts."""
-import flask
-import index
-import os
 import re
 import math
+import flask
+import index
 
 # list of stopwords
 stopwords = []
@@ -28,16 +27,20 @@ def get_service():
 def load_index():
     """Load stopwords pagerank and corresponding inverted index into memory."""
     # print(os.getcwd())
-    with open("./index_server/index/stopwords.txt", "r") as f:
-        for line in f:
+    with open("./index_server/index/stopwords.txt", "r", encoding="utf-8")\
+            as file:
+        for line in file:
             line = line.strip("\n")
             stopwords.append(line)
-    with open("./index_server/index/pagerank.out", "r") as f:
-        for line in f:
+    with open("./index_server/index/pagerank.out", "r", encoding="utf-8")\
+            as file:
+        for line in file:
             line = line.split(",")
             page_rank[line[0]] = line[1].strip("\n")
-    with open(f'./index_server/index/inverted_index/{index.app.config["INDEX_PATH"]}', "r") as f:
-        for line in f:
+    path = \
+        f'./index_server/index/inverted_index/{index.app.config["INDEX_PATH"]}'
+    with open(path, "r", encoding="utf-8") as file:
+        for line in file:
             line = line.strip("\n")
             line = line.split()
 
@@ -65,7 +68,8 @@ def load_index():
 
 
 @index.app.route('/api/v1/hits/')
-def rankDoc():
+def rankdoc():
+    """Doc string."""
     # get query
     query = flask.request.args.get('q')
     weight = flask.request.args.get('w')
@@ -78,24 +82,24 @@ def rankDoc():
     query = re.sub(r"[^a-zA-Z0-9 ]+", "", query)
     query = query.casefold()
     query = query.split()
-    query = [q for q in query if q not in stopwords]
+    query = [my_query for my_query in query if my_query not in stopwords]
 
     tf_query = {}
 
     context = {"hits": []}
-    for q in query:
-        if q not in term_idf.keys():
+    for my_query in query:
+        if my_query not in term_idf:
             return flask.jsonify(**context)
-        if q in tf_query.keys():
-            tf_query[q] += 1
+        if my_query in tf_query:
+            tf_query[my_query] += 1
         else:
-            tf_query[q] = 1
+            tf_query[my_query] = 1
     unique_query = list(tf_query.keys())
 
     # compute query vector:
     query_vector = []
-    for uq in unique_query:
-        query_vector.append(float(tf_query[uq]) * float(term_idf[uq]))
+    for my_uq in unique_query:
+        query_vector.append(float(tf_query[my_uq]) * float(term_idf[my_uq]))
 
     print(query_vector)
     # calculate query vector normalization factor
@@ -109,18 +113,23 @@ def rankDoc():
     # get sets of document that contain each query term
     # find intersection of all the set
     documents = {}
-    for q in tf_query.keys():
-        if q in term_docs.keys():
+    for my_query in tf_query:
+        if my_query in term_docs:
             if documents:
-                documents = documents & set(
-                    [docID for docID in term_docs[q].keys()])
+                documents = documents & set(term_docs[my_query])
             # for docs in term_docs[q].items():
             else:
-                documents = set([docID for docID in term_docs[q].keys()])
+                documents = set(term_docs[my_query])
         # else:
         #     context = {}
         #     return flask.jsonify(**context)
+    doc_tfidf = process_docs(documents, unique_query,
+                             query_vector, norm_query, weight)
+    return result(doc_tfidf)
 
+
+def process_docs(documents, unique_query, query_vector, norm_query, weight):
+    """Doc."""
     documents = list(documents)
     print(documents)
     doc_vectors = []
@@ -129,12 +138,10 @@ def rankDoc():
     for doc in documents:
         doc_vec = []
         # doc_norm_val = 0
-        for q in unique_query:
-            idf_q = term_idf[q]
-            doc_tf = term_docs[q][doc][0]
-            doc_query_term = float(idf_q) * float(doc_tf)
-            doc_vec.append(doc_query_term)
-            doc_norm_val = float(term_docs[q][doc][1])
+        for my_q in unique_query:
+            doc_vec.append(float(term_idf[my_q])
+                           * float(term_docs[my_q][doc][0]))
+            doc_norm_val = float(term_docs[my_q][doc][1])
         doc_vectors.append(doc_vec)
         doc_norms.append(math.sqrt(doc_norm_val))
     print(doc_vectors)
@@ -143,28 +150,38 @@ def rankDoc():
     # FOR EACH DOCUMENT
     # calculate tfidf:
     doc_tfidf = []
-    for i in range(len(documents)):
+    for i, doc in enumerate(documents):
         # 1. dot product of query vector and document vector
         # Calculate the dot product
-        dot_product = 0
-        for j in range(len(query_vector)):
-            dot_product += query_vector[j] * doc_vectors[i][j]
+        dot_product = helper(query_vector, doc_vectors, i)
         # 2. calculate product of two norm-factor
         product_norm = doc_norms[i] * norm_query
         # 3. compute tfidf
-        tfidf = dot_product/product_norm
-        print(tfidf)
         # doc_tfidf.append((tfidf, documents[i]))
 
         # compute score:
         # 1. page ranking
-        pgrank = page_rank[documents[i]]
         # 2. weight
         # 3. tfidf
 
-        score = weight*float(pgrank) + (1-weight)*tfidf
-        doc_tfidf.append((score, documents[i]))
+        doc_tfidf.append(
+            (weight*float(page_rank[doc])
+             + (1-weight)*dot_product/product_norm,
+             doc))
 
+    return doc_tfidf
+
+
+def helper(query_vector, doc_vectors, i):
+    """Doc."""
+    dot_product = 0
+    for j, query_vector_sub in enumerate(query_vector):
+        dot_product += query_vector_sub * doc_vectors[i][j]
+    return dot_product
+
+
+def result(doc_tfidf):
+    """Doc."""
     doc_tfidf.sort(reverse=True)
     print(doc_tfidf)
 

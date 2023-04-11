@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""REDUCE: Calculate normalization factor"""
+"""REDUCE: Calculate normalization factor."""
 import sys
 import itertools
-import math
 # document_id[TAB]term tf nk idf w
 
 
-def reduce_one_group(key, group):
+def reduce_one_group(group):
     """Reduce one group."""
     gps = list(group)
-    sum = 0
+    my_sum = 0
     for line in gps:
         # document_id[TAB]term tf nk idf w
         line = line.strip('\n')
@@ -17,9 +16,9 @@ def reduce_one_group(key, group):
         line = " ".join(line)
         line = line.split(" ")
         line.pop(0)
-        w = line[5]
-        d = float(w) ** 2
-        sum += d
+        my_w = line[5]
+        my_d = float(my_w) ** 2
+        my_sum += my_d
     for line in gps:
         line = line.strip("\n")
         line = line.split("\t")
@@ -28,9 +27,9 @@ def reduce_one_group(key, group):
         line.pop(0)
         docid = line[0]
         term = line[1]
-        tf = line[2]
+        term_freq = line[2]
         idf = line[4]
-        print(f'{term} {idf} {docid} {tf} {sum}')
+        print(f'{term} {idf} {docid} {term_freq} {my_sum}')
 
 
 def keyfunc(line):
@@ -43,8 +42,8 @@ def keyfunc(line):
 
 def main():
     """Divide sorted lines into groups that share a key."""
-    for key, group in itertools.groupby(sys.stdin, keyfunc):
-        reduce_one_group(key, group)
+    for key_group in itertools.groupby(sys.stdin, keyfunc):
+        reduce_one_group(key_group[1])
 
 
 if __name__ == "__main__":

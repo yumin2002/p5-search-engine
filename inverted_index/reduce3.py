@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""MAP for calculate nk(number of documents containing the term)"""
+"""MAP for calculate nk(number of documents containing the term)."""
 import sys
 import itertools
 
 
-def reduce_one_group(key, group):
+def reduce_one_group(group):
     """Reduce one group."""
     gps = list(group)
     word_count = len(gps)
@@ -21,10 +21,10 @@ def keyfunc(line):
 
 
 def main():
-    l = sorted(list(sys.stdin))
     """Divide sorted lines into groups that share a key."""
-    for key, group in itertools.groupby(l, keyfunc):
-        reduce_one_group(key, group)
+    sort_l = sorted(list(sys.stdin))
+    for key_group in itertools.groupby(sort_l, keyfunc):
+        reduce_one_group(key_group[1])
 
 
 if __name__ == "__main__":
