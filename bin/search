@@ -19,7 +19,7 @@ case $1 in
         echo "Error: index server is not running"
         exit 1
     fi
-    if pgrep -f "flask --app search run --host 0.0.0.0 --port 8000" > /dev/null; then
+    if pgrep -f "flask --app search run --host 0.0.0.0 --port 8000" | wc -l; then
         exit 1
     fi
     mkdir -p var/log
