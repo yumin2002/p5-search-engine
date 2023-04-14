@@ -18,7 +18,7 @@ def helper_fetch_res(res, index, url, query, weight):
     # print(res)
 
 
-@search.app.route('/', methods=["POST", "GET"])
+@search.app.route('/', methods=["GET"])
 def show_index():
     """Doc string."""
     # get query and weight from user input in form
