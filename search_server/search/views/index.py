@@ -8,14 +8,13 @@ import requests
 
 
 def helper_fetch_res(res, index, url, query, weight):
-    """Doc string."""
-    # query = " ".join(query)
-    # print("query = .join(query)")
+    """Fetch search results from an Index Server."""
+    params = {"q": query}
+    if weight is not None:
+        params["w"] = weight
 
-    response = requests.get(url, params={"q": query, "w": weight}, timeout=10)
-    # print("res")
+    response = requests.get(url, params=params, timeout=10)
     res[index] = response.json()["hits"]
-    # print(res)
 
 
 @search.app.route('/', methods=["GET"])
